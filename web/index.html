@@ -1115,6 +1115,10 @@ footer {
   #transcript-select {
     max-width: none;
     font-size: 11px;
+    min-width: 0;
+  }
+  #session-info {
+    display: none;
   }
 
   .retros-header {
@@ -1147,8 +1151,38 @@ footer {
 
   .git-timeline-msg { font-size: 11px; }
 
-  #panel { width: 260px; }
+  /* Stack arena and panel vertically on mobile */
+  main {
+    flex-direction: column;
+  }
+  #arena-wrap {
+    min-height: 200px;
+    flex: 1;
+  }
+  #panel {
+    width: 100%;
+    max-height: 35vh;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+  #msg-detail .detail-content {
+    max-height: 80px;
+  }
+
   footer { padding: 8px 12px; }
+  #controls {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .speed-control {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .speed-control input[type=range] {
+    flex: 1;
+    min-width: 0;
+  }
 
   .retro-session-select { font-size: 11px; }
 }
@@ -1156,6 +1190,18 @@ footer {
 @media (max-width: 480px) {
   header h1 { font-size: 12px; }
   .nav-tab { padding: 5px 10px; font-size: 9px; letter-spacing: 0.5px; }
+
+  #panel {
+    max-height: 30vh;
+  }
+  #controls button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  #counter-label {
+    min-width: auto;
+    font-size: 11px;
+  }
 
   .retros-body { padding: 8px; gap: 10px; }
   .retro-entry-header { padding: 10px; }
