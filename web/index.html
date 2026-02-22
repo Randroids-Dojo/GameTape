@@ -560,6 +560,24 @@ footer {
   transition: border-color 0.15s;
 }
 .agreement-item:hover { border-color: var(--text2); }
+.agreement-item-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.agreement-item-header .collapse-icon {
+  font-size: 9px;
+  color: var(--text2);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  width: 14px;
+  text-align: center;
+}
+.agreement-item.collapsed .collapse-icon { transform: rotate(-90deg); }
+.agreement-item.collapsed .agreement-item-detail,
+.agreement-item.collapsed .agreement-item-updates { display: none; }
 .agreement-item-icon {
   font-size: 14px;
   flex-shrink: 0;
@@ -2589,10 +2607,13 @@ function renderAgreements(sections, commits, currentSha) {
       : '';
 
     el.innerHTML = `
-      <div class="agreement-item">
+      <div class="agreement-item collapsed">
         <div class="agreement-item-icon">${icon}</div>
         <div class="agreement-item-content">
-          <div class="agreement-item-text"><strong>${section.number ? '\u00A7' + section.number + ' ' : ''}${section.name}</strong></div>
+          <div class="agreement-item-header" onclick="this.closest('.agreement-item').classList.toggle('collapsed')">
+            <span class="collapse-icon">\u25BC</span>
+            <div class="agreement-item-text"><strong>${section.number ? '\u00A7' + section.number + ' ' : ''}${section.name}</strong></div>
+          </div>
           <div class="agreement-item-detail">${renderMarkdownContent(section.content)}</div>
           ${updatesHTML}
         </div>
