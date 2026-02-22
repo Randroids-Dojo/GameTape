@@ -390,17 +390,801 @@ footer {
   gap: 8px;
 }
 .empty-state .big { font-size: 36px; opacity: 0.3; margin-bottom: 8px; }
+
+/* --- Tab Navigation --- */
+.nav-tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 2px;
+}
+.nav-tab {
+  padding: 6px 16px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text2);
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.nav-tab:hover { background: var(--surface2); color: var(--text); }
+.nav-tab.active { background: var(--accent); color: #fff; }
+
+/* --- View containers --- */
+.view-hidden { display: none !important; }
+
+/* --- Retros View --- */
+#retros-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.retros-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.retros-header h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+.retro-session-select {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  max-width: 400px;
+  flex: 1;
+  min-width: 140px;
+  cursor: pointer;
+}
+.retro-count {
+  font-size: 10px;
+  opacity: 0.7;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* --- Working Agreement View --- */
+#agreement-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.agreement-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.agreement-header h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+.agreement-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+#agreement-info {
+  font-size: 10px;
+  color: var(--text2);
+  white-space: nowrap;
+}
+.agreement-header-actions button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text2);
+  transition: background 0.15s, color 0.15s;
+}
+.agreement-header-actions button:hover { background: var(--surface2); color: var(--text); }
+.agreement-header-actions button.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.agreement-header-actions button.primary:hover { background: #2563eb; }
+
+.agreement-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  min-height: 0;
+}
+.agreement-body::-webkit-scrollbar { width: 6px; }
+.agreement-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.agreement-section {
+  margin-bottom: 28px;
+}
+.agreement-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.agreement-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.agreement-section-count {
+  font-size: 10px;
+  color: var(--text2);
+}
+.agreement-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: border-color 0.15s;
+}
+.agreement-item:hover { border-color: var(--text2); }
+.agreement-item-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.agreement-item-header .collapse-icon {
+  font-size: 9px;
+  color: var(--text2);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  width: 14px;
+  text-align: center;
+}
+.agreement-item.collapsed .collapse-icon { transform: rotate(-90deg); }
+.agreement-item.collapsed .agreement-item-detail,
+.agreement-item.collapsed .agreement-item-updates { display: none; }
+.agreement-item-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+  margin-top: 1px;
+}
+.agreement-item-content {
+  flex: 1;
+  min-width: 0;
+}
+.agreement-item-text {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.agreement-item-detail {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+.agreement-item-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.agreement-item:hover .agreement-item-actions { opacity: 1; }
+.agreement-item-actions button {
+  background: none;
+  border: none;
+  color: var(--text2);
+  font-family: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: color 0.15s, background 0.15s;
+}
+.agreement-item-actions button:hover { color: var(--text); background: var(--surface); }
+.agreement-item-actions button.delete:hover { color: #EF4444; }
+
+.agreement-add-btn {
+  background: none;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: var(--text2);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  text-align: left;
+  width: 100%;
+  margin-top: 4px;
+}
+.agreement-add-btn:hover { border-color: var(--text2); color: var(--text); }
+
+/* Agreement input dialog */
+.agreement-input-dialog {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  width: 520px;
+  max-width: 90vw;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+.agreement-input-dialog h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.agreement-input-dialog label {
+  display: block;
+  font-size: 11px;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  margin-top: 12px;
+}
+.agreement-input-dialog label:first-of-type { margin-top: 0; }
+.agreement-input-dialog input,
+.agreement-input-dialog textarea,
+.agreement-input-dialog select {
+  width: 100%;
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 12px;
+}
+.agreement-input-dialog textarea {
+  min-height: 60px;
+  line-height: 1.6;
+  resize: vertical;
+}
+.agreement-input-dialog input:focus,
+.agreement-input-dialog textarea:focus,
+.agreement-input-dialog select:focus { outline: none; border-color: var(--accent); }
+.agreement-input-dialog .dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+.agreement-input-dialog .dialog-buttons button {
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.agreement-input-dialog .dialog-buttons .btn-cancel {
+  background: none;
+  color: var(--text2);
+}
+.agreement-input-dialog .dialog-buttons .btn-cancel:hover { background: var(--surface2); }
+.agreement-input-dialog .dialog-buttons .btn-save {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.agreement-input-dialog .dialog-buttons .btn-save:hover { background: #2563eb; }
+
+.agreement-last-updated {
+  font-size: 10px;
+  color: var(--text2);
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+/* --- Retro Entries --- */
+.retros-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+}
+.retros-body::-webkit-scrollbar { width: 6px; }
+.retros-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.retro-entry {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.retro-entry-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+.retro-entry-header:hover { background: var(--surface2); }
+.retro-entry-header .collapse-icon {
+  font-size: 10px;
+  color: var(--text2);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+.retro-entry.collapsed .collapse-icon { transform: rotate(-90deg); }
+.retro-entry.collapsed .retro-entry-sections { display: none; }
+.retro-entry.collapsed .retro-entry-header { border-bottom: none; }
+.retro-entry-badge {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+.retro-entry-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.retro-entry-meta-count {
+  font-size: 10px;
+  color: var(--text2);
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+.retro-entry-commit {
+  font-size: 10px;
+  color: var(--text2);
+  flex-shrink: 0;
+}
+.retro-entry-commit code {
+  background: var(--surface2);
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 10px;
+  margin-right: 3px;
+}
+.retro-entry-sections {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.retro-section {
+  border-radius: 8px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--border);
+}
+.retro-section-positive { border-left-color: #10B981; background: rgba(16, 185, 129, 0.06); }
+.retro-section-negative { border-left-color: #EF4444; background: rgba(239, 68, 68, 0.06); }
+.retro-section-action { border-left-color: #3B82F6; background: rgba(59, 130, 246, 0.06); }
+.retro-section-stats { border-left-color: #8B5CF6; background: rgba(139, 92, 246, 0.06); }
+.retro-section-question { border-left-color: #F59E0B; background: rgba(245, 158, 11, 0.06); }
+.retro-section-neutral { background: rgba(39, 53, 73, 0.5); }
+.retro-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.retro-section-title::before {
+  display: inline-block;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.retro-section-positive .retro-section-title::before { content: '\2714'; color: #10B981; }
+.retro-section-negative .retro-section-title::before { content: '\2718'; color: #EF4444; }
+.retro-section-action .retro-section-title::before { content: '\25B6'; color: #3B82F6; }
+.retro-section-stats .retro-section-title::before { content: '\25A0'; color: #8B5CF6; }
+.retro-section-question .retro-section-title::before { content: '?'; color: #F59E0B; font-weight: 700; }
+.retro-section-neutral .retro-section-title::before { content: '\25CB'; color: var(--text2); }
+
+.retro-section-content {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text2);
+}
+.retro-section-content strong { color: var(--text); }
+.retro-section-content code {
+  background: var(--bg);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 11px;
+  color: var(--accent);
+  word-break: break-all;
+}
+.retro-section-content em { color: var(--text); font-style: italic; }
+.retro-section-content p { margin: 4px 0; }
+.retro-section-content p:empty { display: none; }
+
+/* Retro markdown rendering */
+.retro-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.retro-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  min-width: 320px;
+}
+.retro-table th {
+  background: var(--bg);
+  padding: 7px 10px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.retro-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(51,65,85,0.3);
+  color: var(--text2);
+}
+.retro-table td strong { color: var(--text); }
+.retro-table tr:last-child td { border-bottom: none; }
+.retro-table tr:hover td { background: rgba(59,130,246,0.04); }
+
+.retro-checkbox {
+  padding: 5px 0 5px 26px;
+  position: relative;
+  line-height: 1.5;
+}
+.retro-checkbox::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 7px;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 3px;
+}
+.retro-checkbox.checked::before {
+  background: #10B981;
+  border-color: #10B981;
+}
+.retro-checkbox.checked::after {
+  content: '\2713';
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+.retro-checkbox.unchecked::before {
+  border-color: var(--text2);
+}
+.retro-checkbox.partial::before {
+  background: #F59E0B44;
+  border-color: #F59E0B;
+}
+.retro-checkbox.partial::after {
+  content: '~';
+  position: absolute;
+  left: 6px;
+  top: 4px;
+  color: #F59E0B;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.retro-list-item {
+  padding: 4px 0;
+  line-height: 1.6;
+}
+.retro-list-num {
+  color: var(--accent);
+  font-weight: 600;
+  margin-right: 4px;
+}
+.retro-bullet {
+  padding: 3px 0 3px 16px;
+  position: relative;
+  line-height: 1.6;
+}
+.retro-bullet::before {
+  content: '\2022';
+  position: absolute;
+  left: 3px;
+  color: var(--text2);
+}
+.retro-bullet.retro-indent {
+  padding-left: 30px;
+}
+.retro-bullet.retro-indent::before { left: 16px; }
+.retro-bullet.retro-indent2 {
+  padding-left: 44px;
+}
+.retro-bullet.retro-indent2::before { left: 30px; }
+.retro-code {
+  background: var(--bg);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-x: auto;
+  margin: 8px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* --- Agreement Updates Tags --- */
+.agreement-item-updates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+.agreement-update-tag {
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* --- Agreement Version Note --- */
+.agreement-version-note {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: #F59E0B;
+  margin-bottom: 16px;
+}
+.agreement-version-note strong { color: #FBBF24; }
+.agreement-version-note code {
+  background: rgba(245, 158, 11, 0.15);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+/* --- Git Timeline --- */
+.agreement-git-timeline {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.git-timeline-entry {
+  display: flex;
+  gap: 12px;
+  position: relative;
+  padding-bottom: 14px;
+}
+.git-timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+  margin-top: 4px;
+  z-index: 1;
+}
+.git-timeline-entry.active .git-timeline-dot {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--glow);
+}
+.git-timeline-line {
+  position: absolute;
+  left: 4px;
+  top: 14px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.git-timeline-line.last { display: none; }
+.git-timeline-content {
+  flex: 1;
+  min-width: 0;
+}
+.git-timeline-date {
+  font-size: 10px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.git-timeline-msg {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.4;
+  word-break: break-word;
+}
+.git-timeline-sha { margin-top: 2px; }
+.git-timeline-sha code {
+  font-size: 10px;
+  color: var(--text2);
+  background: var(--surface2);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+/* --- Agreement body content styles --- */
+.agreement-body {
+  padding: 16px;
+}
+.agreement-body::-webkit-scrollbar { width: 6px; }
+.agreement-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.agreement-body .agreement-item-detail {
+  max-height: none;
+}
+.agreement-body .agreement-item-detail p { margin: 3px 0; }
+.agreement-body .agreement-item-detail p:empty { display: none; }
+.agreement-body .agreement-item-detail strong { color: var(--text); }
+.agreement-body .agreement-item-detail code {
+  background: var(--bg);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 11px;
+  color: var(--accent);
+  word-break: break-all;
+}
+.agreement-body .retro-bullet {
+  padding: 2px 0 2px 16px;
+  position: relative;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text2);
+}
+.agreement-body .retro-table-wrap {
+  margin: 6px 0;
+}
+
+/* --- Mobile Responsive --- */
+@media (max-width: 768px) {
+  header {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  header h1 { font-size: 13px; }
+  .nav-tabs { order: -1; width: 100%; justify-content: center; }
+  .nav-tab { padding: 6px 12px; font-size: 10px; }
+  #transcript-select {
+    max-width: none;
+    font-size: 11px;
+  }
+
+  .retros-header {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .retros-header h2 { font-size: 13px; }
+  .retros-body { padding: 10px; gap: 12px; }
+
+  .retro-entry-header { padding: 12px; gap: 8px; }
+  .retro-entry-title { font-size: 12px; }
+  .retro-entry-badge { font-size: 7px; padding: 2px 6px; }
+  .retro-entry-commit { display: none; }
+  .retro-entry-sections { padding: 10px 12px; gap: 8px; }
+  .retro-section { padding: 10px 12px; }
+  .retro-section-title { font-size: 10px; margin-bottom: 6px; }
+  .retro-section-content { font-size: 11px; line-height: 1.6; }
+  .retro-table { font-size: 10px; }
+  .retro-table th, .retro-table td { padding: 4px 6px; }
+  .retro-list-item { font-size: 11px; }
+  .retro-bullet { font-size: 11px; }
+
+  .agreement-header { flex-wrap: wrap; padding: 10px 12px; }
+  .agreement-header h2 { font-size: 13px; }
+  .agreement-body { padding: 10px; }
+  .agreement-item { padding: 10px 12px; gap: 8px; }
+  .agreement-item-icon { font-size: 12px; width: 20px; }
+  .agreement-item-text { font-size: 11px; }
+  .agreement-item-detail { font-size: 11px; }
+
+  .git-timeline-msg { font-size: 11px; }
+
+  #panel { width: 260px; }
+  footer { padding: 8px 12px; }
+
+  .retro-session-select { font-size: 11px; }
+}
+
+@media (max-width: 480px) {
+  header h1 { font-size: 12px; }
+  .nav-tab { padding: 5px 10px; font-size: 9px; letter-spacing: 0.5px; }
+
+  .retros-body { padding: 8px; gap: 10px; }
+  .retro-entry-header { padding: 10px; }
+  .retro-entry-title { font-size: 11px; }
+  .retro-entry-sections { padding: 8px 10px; gap: 6px; }
+  .retro-section { padding: 8px 10px; border-left-width: 2px; }
+  .retro-section-title { font-size: 9px; }
+  .retro-section-content { font-size: 10px; }
+
+  .agreement-body { padding: 8px; }
+  .agreement-item { padding: 8px 10px; }
+}
 </style>
 </head>
 <body>
 
 <header>
-  <h1><span>Agent Interaction</span> Replay</h1>
+  <h1><span>GameTape</span></h1>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchView('replay')">Replay</button>
+    <button class="nav-tab" onclick="switchView('retros')">Retros</button>
+    <button class="nav-tab" onclick="switchView('agreement')">Working Agreement</button>
+  </div>
   <select id="transcript-select"><option value="">-- Loading... --</option></select>
   <span id="session-info"></span>
 </header>
 
-<main>
+<!-- ═══ Replay View ═══ -->
+<main id="replay-view">
   <div id="arena-wrap">
     <canvas id="arena-canvas"></canvas>
     <div id="speech-bubble">
@@ -429,7 +1213,7 @@ footer {
   </div>
 </main>
 
-<footer>
+<footer id="replay-footer">
   <div id="timeline" onclick="handleTimelineClick(event)">
     <div id="timeline-fill"></div>
     <div id="timeline-thumb"></div>
@@ -446,6 +1230,42 @@ footer {
     </div>
   </div>
 </footer>
+
+<!-- ═══ Retros View ═══ -->
+<div id="retros-view" class="view-hidden">
+  <div class="retros-header">
+    <h2>Sprint Retrospectives</h2>
+    <select id="retro-sprint-select" class="retro-session-select">
+      <option value="all">All Sprints</option>
+    </select>
+    <span id="retro-info" class="retro-count"></span>
+  </div>
+  <div class="retros-body" id="retros-body">
+    <div class="empty-state">
+      <div class="big">&#8635;</div>
+      <p>Loading retrospectives...</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Working Agreement View ═══ -->
+<div id="agreement-view" class="view-hidden">
+  <div class="agreement-header">
+    <h2>Team Working Agreements</h2>
+    <div class="agreement-header-actions">
+      <select id="agreement-version-select" class="retro-session-select">
+        <option value="latest">Latest Version</option>
+      </select>
+      <span id="agreement-info"></span>
+    </div>
+  </div>
+  <div class="agreement-body" id="agreement-body">
+    <div class="empty-state">
+      <div class="big">&#9881;</div>
+      <p>Loading working agreements...</p>
+    </div>
+  </div>
+</div>
 
 <script>
 // ─── SVG Icons for Agent Avatars ─────────────────────────────────
@@ -1351,6 +2171,486 @@ document.addEventListener('keydown', e => {
       break;
   }
 });
+
+// ─── View Navigation ─────────────────────────────────────────────
+let currentView = 'replay';
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.nav-tab').forEach((tab, i) => {
+    tab.classList.toggle('active', ['replay', 'retros', 'agreement'][i] === view);
+  });
+
+  const replayView = document.getElementById('replay-view');
+  const replayFooter = document.getElementById('replay-footer');
+  const retrosView = document.getElementById('retros-view');
+  const agreementView = document.getElementById('agreement-view');
+  const transcriptSelect = document.getElementById('transcript-select');
+  const sessionInfo = document.getElementById('session-info');
+
+  replayView.classList.toggle('view-hidden', view !== 'replay');
+  replayFooter.classList.toggle('view-hidden', view !== 'replay');
+  retrosView.classList.toggle('view-hidden', view !== 'retros');
+  agreementView.classList.toggle('view-hidden', view !== 'agreement');
+  transcriptSelect.style.display = view === 'replay' ? '' : 'none';
+  sessionInfo.style.display = view === 'replay' ? '' : 'none';
+
+  if (view === 'replay') {
+    resizeCanvas();
+    if (state.current) layoutAgents();
+  }
+  if (view === 'retros' && !retroState.loaded) loadRetroData();
+  if (view === 'agreement' && !agreementState.loaded) loadAgreementData();
+}
+
+// ─── Retros Data & Rendering ─────────────────────────────────────
+const TEAM_SOURCE = {
+  owner: 'Randroids-Dojo',
+  repo: 'UnrealFrog',
+  ref: 'main',
+};
+
+const retroState = {
+  loaded: false,
+  rawMarkdown: '',
+  entries: [],
+  commits: [],
+};
+
+const agreementState = {
+  loaded: false,
+  rawMarkdown: '',
+  sections: [],
+  commits: [],
+};
+
+async function fetchTeamFile(path) {
+  const url = `https://raw.githubusercontent.com/${TEAM_SOURCE.owner}/${TEAM_SOURCE.repo}/${TEAM_SOURCE.ref}/.team/${path}`;
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`Failed to fetch ${path}: ${resp.status}`);
+  return resp.text();
+}
+
+async function fetchFileCommits(path) {
+  const url = `https://api.github.com/repos/${TEAM_SOURCE.owner}/${TEAM_SOURCE.repo}/commits?path=.team/${path}&per_page=30`;
+  const resp = await fetch(url);
+  if (!resp.ok) return [];
+  const data = await resp.json();
+  return data.map(c => ({
+    sha: c.sha.slice(0, 8),
+    date: c.commit.committer.date.slice(0, 10),
+    message: c.commit.message.split('\n')[0].slice(0, 100),
+    fullSha: c.sha,
+  }));
+}
+
+// ─── Parse Retrospective Log ─────────────────────────────────────
+function parseRetroLog(markdown) {
+  const entries = [];
+  // Split on H2 headers
+  const parts = markdown.split(/^(?=## )/m);
+
+  for (const part of parts) {
+    const headerMatch = part.match(/^## (.+)/);
+    if (!headerMatch) continue;
+
+    const title = headerMatch[1].trim();
+    // Extract subsections
+    const subsections = [];
+    const subParts = part.split(/^(?=### )/m);
+
+    for (const sp of subParts) {
+      const subMatch = sp.match(/^### (.+)/);
+      if (!subMatch) continue;
+      subsections.push({
+        title: subMatch[1].trim(),
+        content: sp.replace(/^### .+\n/, '').trim(),
+      });
+    }
+
+    // Determine the sprint number/type
+    let sprintNum = null;
+    let entryType = 'retro'; // retro, review, hotfix
+    const retroNumMatch = title.match(/Retrospective\s+(\d+)/);
+    if (retroNumMatch) sprintNum = parseInt(retroNumMatch[1]);
+    if (title.includes('Stakeholder Review')) entryType = 'review';
+    if (title.includes('Hotfix')) entryType = 'hotfix';
+    if (title.includes('Strategic')) entryType = 'strategic';
+
+    entries.push({
+      title,
+      sprintNum,
+      entryType,
+      subsections,
+      rawContent: part.trim(),
+    });
+  }
+
+  return entries;
+}
+
+function renderMarkdownContent(text) {
+  // Basic markdown to HTML conversion for display
+  let html = text
+    // Code blocks (process first to protect from other transforms)
+    .replace(/```[\s\S]*?```/g, m => {
+      const code = m.replace(/```\w*\n?/, '').replace(/\n?```$/, '');
+      return '<pre class="retro-code">' + escapeHtml(code) + '</pre>';
+    })
+    // Tables — wrap in scrollable container
+    .replace(/^(\|.+\|)\n(\|[-| :]+\|)\n((?:\|.+\|\n?)*)/gm, (match, header, sep, rows) => {
+      const headers = header.split('|').filter(c => c.trim()).map(c => `<th>${inlineMarkdown(c.trim())}</th>`).join('');
+      const bodyRows = rows.trim().split('\n').filter(r => r.trim()).map(row => {
+        const cells = row.split('|').filter(c => c.trim()).map(c => `<td>${inlineMarkdown(c.trim())}</td>`).join('');
+        return `<tr>${cells}</tr>`;
+      }).join('');
+      return `<div class="retro-table-wrap"><table class="retro-table"><thead><tr>${headers}</tr></thead><tbody>${bodyRows}</tbody></table></div>`;
+    })
+    // Checkbox items
+    .replace(/^- \[x\] (.+)$/gm, (_, t) => '<div class="retro-checkbox checked">' + inlineMarkdown(t) + '</div>')
+    .replace(/^- \[~\] (.+)$/gm, (_, t) => '<div class="retro-checkbox partial">' + inlineMarkdown(t) + '</div>')
+    .replace(/^- \[ \] (.+)$/gm, (_, t) => '<div class="retro-checkbox unchecked">' + inlineMarkdown(t) + '</div>')
+    // Numbered lists with bold lead
+    .replace(/^(\d+)\. \*\*(.+?)\*\*(.*)$/gm, (_, n, b, rest) => '<div class="retro-list-item"><span class="retro-list-num">' + n + '.</span> <strong>' + inlineMarkdown(b) + '</strong>' + inlineMarkdown(rest) + '</div>')
+    // Numbered lists plain
+    .replace(/^(\d+)\. (.+)$/gm, (_, n, t) => '<div class="retro-list-item"><span class="retro-list-num">' + n + '.</span> ' + inlineMarkdown(t) + '</div>')
+    // Indented bullets (4 space)
+    .replace(/^    - (.+)$/gm, (_, t) => '<div class="retro-bullet retro-indent2">' + inlineMarkdown(t) + '</div>')
+    // Indented bullets (2-3 space)
+    .replace(/^ {2,3}- (.+)$/gm, (_, t) => '<div class="retro-bullet retro-indent">' + inlineMarkdown(t) + '</div>')
+    // Top-level bullets with bold
+    .replace(/^- \*\*(.+?)\*\*(.*)$/gm, (_, b, rest) => '<div class="retro-bullet"><strong>' + inlineMarkdown(b) + '</strong>' + inlineMarkdown(rest) + '</div>')
+    // Top-level bullets plain
+    .replace(/^- (.+)$/gm, (_, t) => '<div class="retro-bullet">' + inlineMarkdown(t) + '</div>')
+    // Remaining inline formatting
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    // Horizontal rules
+    .replace(/^---+$/gm, '')
+    // Paragraphs (remaining non-empty, non-HTML lines)
+    .replace(/^(?!<|\s*$)(.+)$/gm, (_, t) => '<p>' + inlineMarkdown(t) + '</p>')
+    // Remove empty paragraphs
+    .replace(/<p>\s*<\/p>/g, '');
+
+  return html;
+}
+
+function inlineMarkdown(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>');
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+async function loadRetroData() {
+  const body = document.getElementById('retros-body');
+  body.innerHTML = '<div class="empty-state"><div class="big">&#8635;</div><p>Loading retrospectives from GitHub...</p></div>';
+
+  try {
+    const [markdown, commits] = await Promise.all([
+      fetchTeamFile('retrospective-log.md'),
+      fetchFileCommits('retrospective-log.md'),
+    ]);
+    retroState.rawMarkdown = markdown;
+    retroState.commits = commits;
+    retroState.entries = parseRetroLog(markdown);
+    retroState.loaded = true;
+
+    // Populate sprint selector
+    const sel = document.getElementById('retro-sprint-select');
+    sel.innerHTML = '<option value="all">All Entries (' + retroState.entries.length + ')</option>';
+    for (let i = 0; i < retroState.entries.length; i++) {
+      const e = retroState.entries[i];
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = e.title;
+      sel.appendChild(opt);
+    }
+    sel.onchange = () => renderRetros(sel.value);
+
+    document.getElementById('retro-info').textContent = retroState.entries.length + ' entries \u00B7 ' + commits.length + ' commits';
+    renderRetros('all');
+  } catch (e) {
+    console.error('Failed to load retro data:', e);
+    body.innerHTML = '<div class="empty-state"><div class="big">!</div><p>Failed to load retrospectives: ' + e.message + '</p></div>';
+  }
+}
+
+function renderRetros(filter) {
+  const body = document.getElementById('retros-body');
+  body.innerHTML = '';
+
+  const entries = filter === 'all' ? retroState.entries : [retroState.entries[parseInt(filter)]];
+
+  for (const entry of entries) {
+    const card = document.createElement('div');
+    card.className = 'retro-entry';
+
+    // Type badge color
+    const typeColors = {
+      retro: '#10B981',
+      review: '#F59E0B',
+      hotfix: '#EF4444',
+      strategic: '#8B5CF6',
+    };
+    const typeLabels = {
+      retro: 'RETROSPECTIVE',
+      review: 'STAKEHOLDER REVIEW',
+      hotfix: 'HOTFIX',
+      strategic: 'STRATEGIC REVIEW',
+    };
+
+    // Find associated commit
+    const associatedCommit = retroState.commits.find(c => {
+      const titleLower = entry.title.toLowerCase();
+      const msgLower = c.message.toLowerCase();
+      if (entry.sprintNum !== null && msgLower.includes('sprint ' + entry.sprintNum)) return true;
+      if (titleLower.includes('hotfix') && msgLower.includes('hotfix')) return true;
+      if (titleLower.includes('strategic') && msgLower.includes('strategic')) return true;
+      return false;
+    });
+
+    // Start collapsed in "all" view to reduce scroll overwhelm
+    const startCollapsed = filter === 'all';
+
+    let headerHTML = `
+      <div class="retro-entry-header" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span class="collapse-icon">\u25BC</span>
+        <span class="retro-entry-badge" style="background:${typeColors[entry.entryType]}22;color:${typeColors[entry.entryType]}">${typeLabels[entry.entryType]}</span>
+        <h3 class="retro-entry-title">${entry.title}</h3>
+        <span class="retro-entry-meta-count">${entry.subsections.length} sections</span>
+        ${associatedCommit ? `<span class="retro-entry-commit" title="${associatedCommit.message}"><code>${associatedCommit.sha}</code> ${associatedCommit.date}</span>` : ''}
+      </div>
+    `;
+
+    let sectionsHTML = '';
+    for (const sub of entry.subsections) {
+      // Assign visual category
+      let sectionClass = 'neutral';
+      const titleLower = sub.title.toLowerCase();
+      if (titleLower.includes('went well') || titleLower.includes('what was built')) sectionClass = 'positive';
+      if (titleLower.includes('friction') || titleLower.includes('went wrong') || titleLower.includes('defects')) sectionClass = 'negative';
+      if (titleLower.includes('action item') || titleLower.includes('agreements changed') || titleLower.includes('agreements to change')) sectionClass = 'action';
+      if (titleLower.includes('stats') || titleLower.includes('burndown')) sectionClass = 'stats';
+      if (titleLower.includes('open question') || titleLower.includes('resolved question')) sectionClass = 'question';
+      if (titleLower.includes('feedback') || titleLower.includes('investigation')) sectionClass = 'negative';
+      if (titleLower.includes('immediate fixes') || titleLower.includes('fixes applied')) sectionClass = 'action';
+
+      sectionsHTML += `
+        <div class="retro-section retro-section-${sectionClass}">
+          <div class="retro-section-title">${sub.title}</div>
+          <div class="retro-section-content">${renderMarkdownContent(sub.content)}</div>
+        </div>
+      `;
+    }
+
+    card.innerHTML = headerHTML + '<div class="retro-entry-sections">' + sectionsHTML + '</div>';
+    if (startCollapsed) card.classList.add('collapsed');
+    body.appendChild(card);
+  }
+}
+
+// ─── Parse Working Agreements ────────────────────────────────────
+function parseAgreements(markdown) {
+  const sections = [];
+  // Split on ### for numbered sections within Day 0 Agreements
+  const parts = markdown.split(/^(?=### )/m);
+
+  for (const part of parts) {
+    const headerMatch = part.match(/^### (.+)/);
+    if (!headerMatch) continue;
+
+    const title = headerMatch[1].trim();
+    const content = part.replace(/^### .+\n/, '').trim();
+
+    // Extract the number and name
+    const numMatch = title.match(/^(\d+\w?)\.\s*(.+)/);
+    const number = numMatch ? numMatch[1] : null;
+    const name = numMatch ? numMatch[2] : title;
+
+    // Check for sprint update markers
+    const updates = [];
+    const updateRegex = /\((?:Updated|Added|New)(?::?\s*)?([^)]*(?:Sprint|Retrospective|Review|Hotfix)[^)]*)\)/gi;
+    let m;
+    while ((m = updateRegex.exec(content)) !== null) {
+      updates.push(m[1].trim());
+    }
+
+    sections.push({
+      number,
+      name,
+      title,
+      content,
+      updates,
+    });
+  }
+
+  return sections;
+}
+
+async function loadAgreementData() {
+  const body = document.getElementById('agreement-body');
+  body.innerHTML = '<div class="empty-state"><div class="big">&#9881;</div><p>Loading working agreements from GitHub...</p></div>';
+
+  try {
+    const [markdown, commits] = await Promise.all([
+      fetchTeamFile('agreements.md'),
+      fetchFileCommits('agreements.md'),
+    ]);
+    agreementState.rawMarkdown = markdown;
+    agreementState.commits = commits;
+    agreementState.sections = parseAgreements(markdown);
+    agreementState.loaded = true;
+
+    // Populate version selector with commits
+    const sel = document.getElementById('agreement-version-select');
+    sel.innerHTML = '<option value="latest">Latest (' + commits.length + ' revisions)</option>';
+    for (const c of commits) {
+      const opt = document.createElement('option');
+      opt.value = c.fullSha;
+      opt.textContent = c.date + ' \u2014 ' + c.message.slice(0, 60);
+      sel.appendChild(opt);
+    }
+    sel.onchange = () => {
+      if (sel.value === 'latest') {
+        renderAgreements(agreementState.sections, agreementState.commits);
+      } else {
+        loadAgreementVersion(sel.value);
+      }
+    };
+
+    document.getElementById('agreement-info').textContent = agreementState.sections.length + ' sections \u00B7 ' + commits.length + ' revisions';
+    renderAgreements(agreementState.sections, commits);
+  } catch (e) {
+    console.error('Failed to load agreement data:', e);
+    body.innerHTML = '<div class="empty-state"><div class="big">!</div><p>Failed to load agreements: ' + e.message + '</p></div>';
+  }
+}
+
+async function loadAgreementVersion(sha) {
+  const body = document.getElementById('agreement-body');
+  body.innerHTML = '<div class="empty-state"><div class="big">&#9881;</div><p>Loading version...</p></div>';
+  try {
+    const url = `https://raw.githubusercontent.com/${TEAM_SOURCE.owner}/${TEAM_SOURCE.repo}/${sha}/.team/agreements.md`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('Not found at this commit');
+    const markdown = await resp.text();
+    const sections = parseAgreements(markdown);
+    renderAgreements(sections, agreementState.commits, sha);
+  } catch (e) {
+    body.innerHTML = '<div class="empty-state"><div class="big">!</div><p>Failed to load version: ' + e.message + '</p></div>';
+  }
+}
+
+function renderAgreements(sections, commits, currentSha) {
+  const body = document.getElementById('agreement-body');
+  body.innerHTML = '';
+
+  // Preamble
+  if (currentSha) {
+    const commit = commits.find(c => c.fullSha === currentSha);
+    if (commit) {
+      const note = document.createElement('div');
+      note.className = 'agreement-version-note';
+      note.innerHTML = `Viewing version from <strong>${commit.date}</strong>: <code>${commit.sha}</code> &mdash; ${commit.message}`;
+      body.appendChild(note);
+    }
+  }
+
+  for (const section of sections) {
+    const el = document.createElement('div');
+    el.className = 'agreement-section';
+
+    // Determine icon
+    const icons = {
+      'collaboration': '\u{1F91D}',
+      'tdd': '\u{1F9EA}',
+      'communication': '\u{1F4AC}',
+      'commit': '\u{1F4E6}',
+      'feature workflow': '\u{1F500}',
+      'definition of done': '\u2705',
+      'asset': '\u{1F3A8}',
+      'retrospective': '\u{1F504}',
+      'playunreal': '\u{1F3AE}',
+      'visual': '\u{1F441}',
+      'scene': '\u{1F304}',
+      'material': '\u{1F308}',
+      'overlap': '\u{1F4CD}',
+      'delegate': '\u{1F517}',
+      'launch': '\u{1F680}',
+      'platform': '\u{1F6A7}',
+      'runtime': '\u26A1',
+      'deferred': '\u23F0',
+      'cross-domain': '\u{1F50D}',
+      'one agent': '\u{1F512}',
+      'position': '\u{1F4CF}',
+      'auto-screenshot': '\u{1F4F8}',
+      'constant': '\u{1F504}',
+      'retro notes': '\u{1F4DD}',
+      'sprint sequencing': '\u{1F4C5}',
+      'webfrogger': '\u{1F438}',
+    };
+
+    let icon = '\u{1F4CB}';
+    const nameLower = section.name.toLowerCase();
+    for (const [key, value] of Object.entries(icons)) {
+      if (nameLower.includes(key)) { icon = value; break; }
+    }
+
+    const updatesHTML = section.updates.length > 0
+      ? `<div class="agreement-item-updates">${section.updates.map(u => `<span class="agreement-update-tag">${u}</span>`).join('')}</div>`
+      : '';
+
+    el.innerHTML = `
+      <div class="agreement-item collapsed">
+        <div class="agreement-item-icon">${icon}</div>
+        <div class="agreement-item-content">
+          <div class="agreement-item-header" onclick="this.closest('.agreement-item').classList.toggle('collapsed')">
+            <span class="collapse-icon">\u25BC</span>
+            <div class="agreement-item-text"><strong>${section.number ? '\u00A7' + section.number + ' ' : ''}${section.name}</strong></div>
+          </div>
+          <div class="agreement-item-detail">${renderMarkdownContent(section.content)}</div>
+          ${updatesHTML}
+        </div>
+      </div>
+    `;
+    body.appendChild(el);
+  }
+
+  // Git history timeline
+  if (commits.length > 0) {
+    const timeline = document.createElement('div');
+    timeline.className = 'agreement-git-timeline';
+    timeline.innerHTML = `
+      <div class="agreement-section-title" style="margin-bottom:12px">Evolution Timeline</div>
+      ${commits.map((c, i) => `
+        <div class="git-timeline-entry${c.fullSha === currentSha ? ' active' : ''}">
+          <div class="git-timeline-dot"></div>
+          <div class="git-timeline-line${i === commits.length - 1 ? ' last' : ''}"></div>
+          <div class="git-timeline-content">
+            <div class="git-timeline-date">${c.date}</div>
+            <div class="git-timeline-msg">${c.message}</div>
+            <div class="git-timeline-sha"><code>${c.sha}</code></div>
+          </div>
+        </div>
+      `).join('')}
+    `;
+    body.appendChild(timeline);
+  }
+
+  // Last updated
+  if (commits.length > 0) {
+    const updated = document.createElement('div');
+    updated.className = 'agreement-last-updated';
+    updated.textContent = 'Last updated: ' + commits[0].date + ' \u00B7 ' + commits.length + ' total revisions';
+    body.appendChild(updated);
+  }
+}
 
 // ─── Init ────────────────────────────────────────────────────────
 resizeCanvas();
