@@ -151,7 +151,7 @@ main {
   color: var(--text);
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.9);
-  transition: opacity 0.25s, transform 0.25s;
+  transition: opacity 0.25s, transform 0.25s, max-width 0.25s;
   pointer-events: none;
   z-index: 10;
   box-shadow: 0 4px 24px rgba(0,0,0,0.5);
@@ -159,6 +159,8 @@ main {
 #speech-bubble.visible {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+  cursor: pointer;
 }
 #speech-bubble .bubble-from {
   font-size: 10px;
@@ -172,6 +174,22 @@ main {
   word-break: break-word;
   max-height: 120px;
   overflow: hidden;
+}
+#speech-bubble.bubble-expanded {
+  max-width: 480px;
+}
+#speech-bubble.bubble-expanded .bubble-text {
+  max-height: 400px;
+  overflow-y: auto;
+}
+#speech-bubble.bubble-expanded .bubble-text::-webkit-scrollbar { width: 4px; }
+#speech-bubble.bubble-expanded .bubble-text::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.bubble-expand-hint {
+  font-size: 9px;
+  color: var(--text2);
+  opacity: 0.5;
+  margin-top: 4px;
+  text-align: right;
 }
 
 /* --- Drop Zone --- */
@@ -218,6 +236,8 @@ main {
   padding: 16px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+  overflow-y: auto;
+  max-height: 60vh;
 }
 #msg-detail .detail-header {
   display: flex;
@@ -250,6 +270,9 @@ main {
   margin-bottom: 10px;
   font-weight: 600;
 }
+#msg-detail .detail-content-wrap {
+  position: relative;
+}
 #msg-detail .detail-content {
   font-size: 12px;
   line-height: 1.6;
@@ -258,9 +281,32 @@ main {
   overflow-y: auto;
   white-space: pre-wrap;
   word-break: break-word;
+  transition: max-height 0.25s ease;
+}
+#msg-detail .detail-content.expanded {
+  max-height: none;
 }
 #msg-detail .detail-content::-webkit-scrollbar { width: 4px; }
 #msg-detail .detail-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.detail-expand-btn {
+  display: none;
+  width: 100%;
+  padding: 4px 0;
+  margin-top: 4px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.detail-expand-btn.visible { display: block; }
+.detail-expand-btn:hover { background: var(--surface2); color: var(--text); }
 
 /* --- Message List --- */
 #msg-list-wrap {
@@ -298,6 +344,38 @@ main {
   flex: 1;
   min-width: 0;
 }
+.msg-item-expand {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--text2);
+  font-family: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  padding: 0 4px;
+  opacity: 0.5;
+  transition: opacity 0.15s, color 0.15s;
+}
+.msg-item-expand:hover { opacity: 1; color: var(--accent); }
+.msg-item.msg-expanded {
+  flex-wrap: wrap;
+}
+.msg-item.msg-expanded .msg-item-summary {
+  white-space: pre-wrap;
+  overflow: visible;
+  text-overflow: unset;
+  flex-basis: 100%;
+  order: 10;
+  margin-top: 6px;
+  padding: 8px;
+  background: var(--bg);
+  border-radius: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+  line-height: 1.5;
+}
+.msg-item.msg-expanded .msg-item-summary::-webkit-scrollbar { width: 4px; }
+.msg-item.msg-expanded .msg-item-summary::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 .msg-self-badge {
   font-size: 8px;
   background: rgba(99,102,241,0.2);
@@ -1233,9 +1311,10 @@ footer {
 <main id="replay-view">
   <div id="arena-wrap">
     <canvas id="arena-canvas"></canvas>
-    <div id="speech-bubble">
+    <div id="speech-bubble" onclick="toggleBubbleExpand()">
       <div class="bubble-from"></div>
       <div class="bubble-text"></div>
+      <div class="bubble-expand-hint" id="bubble-expand-hint"></div>
     </div>
     <div id="drop-zone" class="hidden">
       <p>Drop transcript .md files here</p>
@@ -1253,7 +1332,10 @@ footer {
       </div>
       <div class="detail-route" id="detail-route"></div>
       <div class="detail-type" id="detail-type"></div>
-      <div class="detail-content" id="detail-content">Select a session to begin.</div>
+      <div class="detail-content-wrap">
+        <div class="detail-content" id="detail-content">Select a session to begin.</div>
+        <button class="detail-expand-btn" id="detail-expand-btn" onclick="toggleDetailExpand()">Expand</button>
+      </div>
     </div>
     <div id="msg-list-wrap"></div>
   </div>
@@ -1646,12 +1728,12 @@ function parseTranscriptMd(text, filename) {
       const toM = summary.match(/\[to\s+([a-z][\w-]*)\]/i);
       if (toM) receiver = toM[1];
       const mtype = content.includes('"type": "idle_notification"') ? 'idle' : 'teammate';
-      messages.push({ time, from: sender, to: receiver, content: content.slice(0, 800), summary, type: mtype });
+      messages.push({ time, from: sender, to: receiver, content, summary, type: mtype });
       lastTeammate = sender;
     } else if (role === 'User') {
       const content = body.trim();
       if (content.length > 10) {
-        messages.push({ time, from: 'user', to: 'team-lead', content: content.slice(0, 800), summary: '', type: 'user' });
+        messages.push({ time, from: 'user', to: 'team-lead', content, summary: '', type: 'user' });
         lastTeammate = null;
       }
     } else if (role === 'Assistant') {
@@ -1659,7 +1741,7 @@ function parseTranscriptMd(text, filename) {
       if (lines.length > 0) {
         const receiver = lastTeammate || 'all';
         const mtype = body.includes('**Used SendMessage**') ? 'send' : 'response';
-        messages.push({ time, from: 'team-lead', to: receiver, content: lines.join('\n').slice(0, 800), summary: '', type: mtype });
+        messages.push({ time, from: 'team-lead', to: receiver, content: lines.join('\n'), summary: '', type: mtype });
       }
     }
   }
@@ -1896,8 +1978,17 @@ function showBubble(msg, receiverPos) {
   bubble.querySelector('.bubble-from').textContent = agent?.label || msg.from;
   bubble.querySelector('.bubble-from').style.color = agent?.color || '#fff';
 
-  const text = msg.summary || msg.content.slice(0, 160);
-  bubble.querySelector('.bubble-text').textContent = text + (msg.content.length > 160 && !msg.summary ? '...' : '');
+  const shortText = msg.summary || msg.content.slice(0, 160);
+  const isTruncated = msg.content.length > 160 && !msg.summary;
+  const bubbleText = bubble.querySelector('.bubble-text');
+  bubbleText.textContent = shortText + (isTruncated ? '...' : '');
+  bubble.dataset.fullContent = msg.content;
+  bubble.dataset.shortContent = shortText + (isTruncated ? '...' : '');
+  bubble.dataset.truncated = isTruncated ? '1' : '0';
+  bubble.classList.remove('bubble-expanded');
+
+  const hint = document.getElementById('bubble-expand-hint');
+  hint.textContent = isTruncated ? 'click to expand' : '';
 
   const wrap = document.getElementById('arena-wrap').getBoundingClientRect();
   const cx = wrap.width / 2, cy = wrap.height / 2;
@@ -1913,7 +2004,21 @@ function showBubble(msg, receiverPos) {
 }
 
 function hideBubble() {
-  bubble.classList.remove('visible');
+  bubble.classList.remove('visible', 'bubble-expanded');
+}
+
+function toggleBubbleExpand() {
+  if (bubble.dataset.truncated !== '1') return;
+  const isExpanded = bubble.classList.toggle('bubble-expanded');
+  const bubbleText = bubble.querySelector('.bubble-text');
+  const hint = document.getElementById('bubble-expand-hint');
+  if (isExpanded) {
+    bubbleText.textContent = bubble.dataset.fullContent;
+    hint.textContent = 'click to collapse';
+  } else {
+    bubbleText.textContent = bubble.dataset.shortContent;
+    hint.textContent = 'click to expand';
+  }
 }
 
 // ─── Animation ───────────────────────────────────────────────────
@@ -2099,6 +2204,14 @@ function handleTimelineClick(e) {
   showMessageStatic(idx);
 }
 
+// ─── Expand / Collapse ───────────────────────────────────────────
+function toggleDetailExpand() {
+  const contentEl = document.getElementById('detail-content');
+  const btn = document.getElementById('detail-expand-btn');
+  const expanded = contentEl.classList.toggle('expanded');
+  btn.textContent = expanded ? 'Collapse' : 'Expand';
+}
+
 // ─── UI Updates ──────────────────────────────────────────────────
 function updateUI() {
   const total = state.messages.length;
@@ -2153,7 +2266,15 @@ function updateUI() {
     typeEl.style.color = typeColors[msg.type] || '#94A3B8';
     typeEl.textContent = msg.type;
 
-    document.getElementById('detail-content').textContent = msg.content;
+    const contentEl = document.getElementById('detail-content');
+    contentEl.textContent = msg.content;
+    contentEl.classList.remove('expanded');
+    // Show expand button if content overflows the 200px max-height
+    requestAnimationFrame(() => {
+      const btn = document.getElementById('detail-expand-btn');
+      btn.textContent = 'Expand';
+      btn.classList.toggle('visible', contentEl.scrollHeight > contentEl.clientHeight);
+    });
 
     document.querySelectorAll('.msg-item').forEach((el, i) => {
       el.classList.toggle('active', i === idx);
@@ -2190,7 +2311,22 @@ function renderMessageList() {
 
     const summary = document.createElement('span');
     summary.className = 'msg-item-summary';
-    summary.textContent = msg.summary || msg.content.slice(0, 60).replace(/\n/g, ' ');
+    const shortText = msg.summary || msg.content.slice(0, 60).replace(/\n/g, ' ');
+    summary.textContent = shortText;
+    summary.dataset.short = shortText;
+    summary.dataset.full = msg.content;
+
+    const expandBtn = document.createElement('button');
+    expandBtn.className = 'msg-item-expand';
+    expandBtn.textContent = '\u25B6'; // right triangle
+    expandBtn.title = 'Expand message';
+    expandBtn.onclick = (e) => {
+      e.stopPropagation();
+      const isExpanded = item.classList.toggle('msg-expanded');
+      summary.textContent = isExpanded ? summary.dataset.full : summary.dataset.short;
+      expandBtn.textContent = isExpanded ? '\u25BC' : '\u25B6';
+      expandBtn.title = isExpanded ? 'Collapse message' : 'Expand message';
+    };
 
     const time = document.createElement('span');
     time.className = 'msg-item-time';
@@ -2199,7 +2335,7 @@ function renderMessageList() {
     time.textContent = timeParts.length > 1 ? timeParts[timeParts.length - 1] : msg.time;
     if (timeParts.length > 1) time.title = msg.time + ' UTC';
 
-    item.append(dot, route, summary, time);
+    item.append(dot, route, summary, expandBtn, time);
     if (isSelf) {
       const badge = document.createElement('span');
       badge.className = 'msg-self-badge';

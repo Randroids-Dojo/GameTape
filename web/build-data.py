@@ -151,7 +151,7 @@ def parse_messages(content, date=''):
 
             messages.append({
                 "time": time, "from": sender, "to": receiver,
-                "content": msg_content[:800], "summary": summary, "type": msg_type
+                "content": msg_content, "summary": summary, "type": msg_type
             })
             last_teammate = sender
 
@@ -160,7 +160,7 @@ def parse_messages(content, date=''):
             if msg_content and len(msg_content) > 10:
                 messages.append({
                     "time": time, "from": "user", "to": "team-lead",
-                    "content": msg_content[:800], "summary": "", "type": "user"
+                    "content": msg_content, "summary": "", "type": "user"
                 })
                 last_teammate = None
 
@@ -174,7 +174,7 @@ def parse_messages(content, date=''):
                 clean = '\n'.join(lines)
                 messages.append({
                     "time": time, "from": "team-lead", "to": receiver,
-                    "content": clean[:800], "summary": "", "type": msg_type
+                    "content": clean, "summary": "", "type": msg_type
                 })
 
     return messages
