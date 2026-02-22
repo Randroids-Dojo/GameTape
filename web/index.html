@@ -411,7 +411,7 @@ footer {
       <p>Drop transcript .md files here</p>
       <button onclick="document.getElementById('file-input').click()">Browse Files</button>
       <input type="file" id="file-input" multiple accept=".md,.json">
-      <span class="hint">Or load pre-built data from data/transcripts.json</span>
+      <span class="hint">Or drag transcript .md files from your machine</span>
     </div>
   </div>
 
@@ -521,23 +521,178 @@ function resizeCanvas() {
 }
 window.addEventListener('resize', resizeCanvas);
 
+// ─── Default GitHub Source ────────────────────────────────────────
+const DEFAULT_SOURCES = [
+  {
+    owner: 'Randroids-Dojo',
+    repo: 'UnrealFrog',
+    path: '.claude/transcripts',
+    ref: '39db5cc3ed7076b46cc0660d58e70aa1f0304556',
+  },
+];
+
+// ─── GitHub Fetching ─────────────────────────────────────────────
+async function listGitHubFiles(source) {
+  const url = `https://api.github.com/repos/${source.owner}/${source.repo}/contents/${source.path}?ref=${source.ref}`;
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`GitHub API ${resp.status}: ${resp.statusText}`);
+  const items = await resp.json();
+  return items.filter(f => f.name.endsWith('.md')).map(f => f.path);
+}
+
+async function fetchRawFile(source, filepath) {
+  const url = `https://raw.githubusercontent.com/${source.owner}/${source.repo}/${source.ref}/${filepath}`;
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`Fetch failed: ${resp.status}`);
+  return resp.text();
+}
+
+// ─── Session Merging ─────────────────────────────────────────────
+function mergeSession(transcripts) {
+  const primary = transcripts.reduce((a, b) => a.messageCount > b.messageCount ? a : b);
+  const meta = Object.assign({}, primary.metadata);
+
+  const allParticipants = new Set();
+  for (const t of transcripts) {
+    for (const p of t.participants) allParticipants.add(p);
+  }
+
+  const merged = [];
+  for (let fi = 0; fi < transcripts.length; fi++) {
+    const t = transcripts[fi];
+    for (let mi = 0; mi < t.messages.length; mi++) {
+      merged.push({ time: t.messages[mi].time, fi, mi, msg: t.messages[mi] });
+    }
+  }
+  merged.sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : a.fi - b.fi || a.mi - b.mi);
+
+  const sessionId = meta.sessionId || primary.id;
+  return {
+    id: sessionId,
+    title: primary.title,
+    metadata: meta,
+    messages: merged.map(m => m.msg),
+    participants: [...allParticipants].sort(),
+    messageCount: merged.length,
+    fileCount: transcripts.length,
+  };
+}
+
+function groupAndMergeSessions(transcripts) {
+  const bySession = {};
+  for (const t of transcripts) {
+    const sid = t.metadata?.sessionId || t.id;
+    if (!bySession[sid]) bySession[sid] = [];
+    bySession[sid].push(t);
+  }
+  const sessions = Object.values(bySession).map(group => mergeSession(group));
+  sessions.sort((a, b) => {
+    const da = a.metadata?.date || '', db = b.metadata?.date || '';
+    return da > db ? -1 : da < db ? 1 : a.id > b.id ? -1 : 1;
+  });
+  return sessions;
+}
+
 // ─── Data Loading ────────────────────────────────────────────────
+function setLoadingStatus(text) {
+  const sel = document.getElementById('transcript-select');
+  sel.innerHTML = '<option value="">-- ' + text + ' --</option>';
+}
+
+async function loadFromGitHub(sources) {
+  const allTranscripts = [];
+
+  for (const source of sources) {
+    const label = source.owner + '/' + source.repo;
+    setLoadingStatus('Listing files from ' + label + '...');
+
+    let files;
+    try {
+      files = await listGitHubFiles(source);
+    } catch (e) {
+      console.error('Failed to list files from ' + label + ':', e);
+      continue;
+    }
+
+    setLoadingStatus('Downloading ' + files.length + ' transcripts from ' + label + '...');
+
+    // Fetch in batches to avoid overwhelming the browser
+    const BATCH = 15;
+    let done = 0;
+    for (let i = 0; i < files.length; i += BATCH) {
+      const batch = files.slice(i, i + BATCH);
+      const results = await Promise.allSettled(
+        batch.map(f => fetchRawFile(source, f).then(content => ({ name: f.split('/').pop().replace('.md', ''), content })))
+      );
+      for (const r of results) {
+        if (r.status !== 'fulfilled') continue;
+        try {
+          const t = parseTranscriptMd(r.value.content, r.value.name + '.md');
+          // Extract metadata (date, sessionId) that parseTranscriptMd doesn't capture
+          t.metadata = parseMetadata(r.value.content);
+          const hasTeammate = t.messages.some(m => m.type === 'teammate' || m.type === 'idle');
+          if (hasTeammate && t.messages.length > 0) {
+            allTranscripts.push(t);
+          }
+        } catch (e) {
+          console.error('Parse error:', r.value.name, e);
+        }
+      }
+      done += batch.length;
+      setLoadingStatus('Downloaded ' + done + ' / ' + files.length + '...');
+    }
+  }
+
+  return allTranscripts;
+}
+
+function parseMetadata(content) {
+  const meta = {};
+  const patterns = [
+    ['date',      /\| Date \| (\d{4}-\d{2}-\d{2}) \|/],
+    ['sessionId', /\| Session ID \| `([^`]+)` \|/],
+    ['model',     /\| Model \| ([^|]+) \|/],
+    ['duration',  /\| Duration \| ([^|]+) \|/],
+    ['tokens',    /\| Tokens \| ([^|]+) \|/],
+  ];
+  for (const [key, re] of patterns) {
+    const m = content.match(re);
+    if (m) meta[key] = m[1].trim();
+  }
+  return meta;
+}
+
 async function loadData() {
   try {
-    const resp = await fetch('data/transcripts.json');
-    if (!resp.ok) throw new Error('No data file');
-    const data = await resp.json();
-    if (data.agents) Object.assign(AGENTS, data.agents);
-    state.transcripts = data.transcripts || [];
-    populateSelector();
-    if (state.transcripts.length > 0) {
+    setLoadingStatus('Loading transcripts from GitHub...');
+    const transcripts = await loadFromGitHub(DEFAULT_SOURCES);
+    if (transcripts.length > 0) {
+      state.transcripts = groupAndMergeSessions(transcripts);
+      populateSelector();
       document.getElementById('drop-zone').classList.add('hidden');
-    } else {
-      document.getElementById('drop-zone').classList.remove('hidden');
+      return;
     }
-  } catch {
-    document.getElementById('drop-zone').classList.remove('hidden');
+  } catch (e) {
+    console.error('GitHub load failed:', e);
   }
+
+  // Fallback: try local data file
+  try {
+    const resp = await fetch('data/transcripts.json');
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data.agents) Object.assign(AGENTS, data.agents);
+      state.transcripts = data.transcripts || [];
+      populateSelector();
+      if (state.transcripts.length > 0) {
+        document.getElementById('drop-zone').classList.add('hidden');
+        return;
+      }
+    }
+  } catch {}
+
+  document.getElementById('drop-zone').classList.remove('hidden');
+  setLoadingStatus('No transcripts loaded');
 }
 
 function populateSelector() {
