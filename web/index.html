@@ -1608,6 +1608,7 @@ function handleFiles(files) {
         } catch {}
       } else {
         const t = parseTranscriptMd(text, file.name);
+        t.metadata = parseMetadata(text);
         if (t && t.messages.length > 0) {
           state.transcripts.push(t);
           populateSelector();
@@ -1621,15 +1622,19 @@ function handleFiles(files) {
 
 function parseTranscriptMd(text, filename) {
   const messages = [];
-  const sections = text.split(/^(## (?:User|Assistant) \(\d{2}:\d{2} UTC\))/m);
+  // Extract date from metadata table if present
+  const dateMatch = text.match(/\| Date \| (\d{4}-\d{2}-\d{2}) \|/);
+  const date = dateMatch ? dateMatch[1] : '';
+  const sections = text.split(/^(## (?:User|Assistant) \(\d{2}:\d{2}(?::\d{2})? UTC\))/m);
   let lastTeammate = null;
 
   for (let i = 1; i < sections.length; i += 2) {
     const header = sections[i];
     const body = sections[i + 1] || '';
-    const hm = header.match(/## (User|Assistant) \((\d{2}:\d{2}) UTC\)/);
+    const hm = header.match(/## (User|Assistant) \((\d{2}:\d{2}(?::\d{2})?) UTC\)/);
     if (!hm) continue;
-    const [, role, time] = hm;
+    let [, role, time] = hm;
+    if (date) time = date + ' ' + time;
 
     const tm = body.match(/<teammate-message\s+teammate_id="([^"]+)"(?:\s+color="[^"]*")?(?:\s+summary="([^"]*)")?\s*>/);
 
@@ -2114,6 +2119,10 @@ function updateUI() {
 
     document.getElementById('detail-time').textContent = msg.time + ' UTC';
 
+    // Show full timestamp tooltip on the time element
+    const detailTimeEl = document.getElementById('detail-time');
+    detailTimeEl.title = msg.time + ' UTC';
+
     const routeEl = document.getElementById('detail-route');
     routeEl.innerHTML = '';
     const fromSpan = document.createElement('span');
@@ -2185,7 +2194,10 @@ function renderMessageList() {
 
     const time = document.createElement('span');
     time.className = 'msg-item-time';
-    time.textContent = msg.time;
+    // Show compact time (HH:MM or HH:MM:SS) in the list, full timestamp on hover
+    const timeParts = msg.time.split(' ');
+    time.textContent = timeParts.length > 1 ? timeParts[timeParts.length - 1] : msg.time;
+    if (timeParts.length > 1) time.title = msg.time + ' UTC';
 
     item.append(dot, route, summary, time);
     if (isSelf) {
