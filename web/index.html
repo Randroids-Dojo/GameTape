@@ -151,7 +151,7 @@ main {
   color: var(--text);
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.9);
-  transition: opacity 0.25s, transform 0.25s;
+  transition: opacity 0.25s, transform 0.25s, max-width 0.25s;
   pointer-events: none;
   z-index: 10;
   box-shadow: 0 4px 24px rgba(0,0,0,0.5);
@@ -159,6 +159,8 @@ main {
 #speech-bubble.visible {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+  cursor: pointer;
 }
 #speech-bubble .bubble-from {
   font-size: 10px;
@@ -172,6 +174,22 @@ main {
   word-break: break-word;
   max-height: 120px;
   overflow: hidden;
+}
+#speech-bubble.bubble-expanded {
+  max-width: 480px;
+}
+#speech-bubble.bubble-expanded .bubble-text {
+  max-height: 400px;
+  overflow-y: auto;
+}
+#speech-bubble.bubble-expanded .bubble-text::-webkit-scrollbar { width: 4px; }
+#speech-bubble.bubble-expanded .bubble-text::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.bubble-expand-hint {
+  font-size: 9px;
+  color: var(--text2);
+  opacity: 0.5;
+  margin-top: 4px;
+  text-align: right;
 }
 
 /* --- Drop Zone --- */
@@ -1293,9 +1311,10 @@ footer {
 <main id="replay-view">
   <div id="arena-wrap">
     <canvas id="arena-canvas"></canvas>
-    <div id="speech-bubble">
+    <div id="speech-bubble" onclick="toggleBubbleExpand()">
       <div class="bubble-from"></div>
       <div class="bubble-text"></div>
+      <div class="bubble-expand-hint" id="bubble-expand-hint"></div>
     </div>
     <div id="drop-zone" class="hidden">
       <p>Drop transcript .md files here</p>
@@ -1959,8 +1978,17 @@ function showBubble(msg, receiverPos) {
   bubble.querySelector('.bubble-from').textContent = agent?.label || msg.from;
   bubble.querySelector('.bubble-from').style.color = agent?.color || '#fff';
 
-  const text = msg.summary || msg.content.slice(0, 160);
-  bubble.querySelector('.bubble-text').textContent = text + (msg.content.length > 160 && !msg.summary ? '...' : '');
+  const shortText = msg.summary || msg.content.slice(0, 160);
+  const isTruncated = msg.content.length > 160 && !msg.summary;
+  const bubbleText = bubble.querySelector('.bubble-text');
+  bubbleText.textContent = shortText + (isTruncated ? '...' : '');
+  bubble.dataset.fullContent = msg.content;
+  bubble.dataset.shortContent = shortText + (isTruncated ? '...' : '');
+  bubble.dataset.truncated = isTruncated ? '1' : '0';
+  bubble.classList.remove('bubble-expanded');
+
+  const hint = document.getElementById('bubble-expand-hint');
+  hint.textContent = isTruncated ? 'click to expand' : '';
 
   const wrap = document.getElementById('arena-wrap').getBoundingClientRect();
   const cx = wrap.width / 2, cy = wrap.height / 2;
@@ -1976,7 +2004,21 @@ function showBubble(msg, receiverPos) {
 }
 
 function hideBubble() {
-  bubble.classList.remove('visible');
+  bubble.classList.remove('visible', 'bubble-expanded');
+}
+
+function toggleBubbleExpand() {
+  if (bubble.dataset.truncated !== '1') return;
+  const isExpanded = bubble.classList.toggle('bubble-expanded');
+  const bubbleText = bubble.querySelector('.bubble-text');
+  const hint = document.getElementById('bubble-expand-hint');
+  if (isExpanded) {
+    bubbleText.textContent = bubble.dataset.fullContent;
+    hint.textContent = 'click to collapse';
+  } else {
+    bubbleText.textContent = bubble.dataset.shortContent;
+    hint.textContent = 'click to expand';
+  }
 }
 
 // ─── Animation ───────────────────────────────────────────────────
