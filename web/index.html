@@ -432,15 +432,17 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
-  gap: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 .retros-header h2 {
   font-size: 14px;
   font-weight: 600;
   color: var(--text);
+  white-space: nowrap;
 }
 .retro-session-select {
   background: var(--surface2);
@@ -452,203 +454,14 @@ footer {
   font-size: 12px;
   max-width: 400px;
   flex: 1;
+  min-width: 140px;
   cursor: pointer;
 }
-.retro-column {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.retro-column-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-}
-.retro-column-header.went-well { background: rgba(16, 185, 129, 0.15); color: #10B981; }
-.retro-column-header.didnt-go-well { background: rgba(239, 68, 68, 0.15); color: #EF4444; }
-.retro-column-header.action-items { background: rgba(59, 130, 246, 0.15); color: #3B82F6; }
 .retro-count {
   font-size: 10px;
   opacity: 0.7;
   font-weight: 400;
-}
-.retro-add-btn {
-  background: none;
-  border: 1px dashed var(--border);
-  border-radius: 6px;
-  padding: 10px 14px;
-  color: var(--text2);
-  font-family: inherit;
-  font-size: 12px;
-  cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
-  text-align: left;
-}
-.retro-add-btn:hover { border-color: var(--text2); color: var(--text); }
-.retro-items {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
-}
-.retro-items::-webkit-scrollbar { width: 4px; }
-.retro-items::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-.retro-item {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px;
-  position: relative;
-  transition: border-color 0.15s;
-}
-.retro-item:hover { border-color: var(--text2); }
-.retro-item-text {
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--text);
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-.retro-item-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-  font-size: 10px;
-  color: var(--text2);
-}
-.retro-item-author {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.retro-item-author .dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  display: inline-block;
-}
-.retro-item-actions {
-  display: flex;
-  gap: 6px;
-}
-.retro-item-actions button {
-  background: none;
-  border: none;
-  color: var(--text2);
-  font-family: inherit;
-  font-size: 10px;
-  cursor: pointer;
-  padding: 2px 4px;
-  border-radius: 3px;
-  transition: color 0.15s, background 0.15s;
-}
-.retro-item-actions button:hover { color: var(--text); background: var(--surface); }
-.retro-item-actions button.delete:hover { color: #EF4444; }
-
-/* Retro input modal */
-.retro-input-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-}
-.retro-input-dialog {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-  width: 480px;
-  max-width: 90vw;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
-}
-.retro-input-dialog h3 {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 16px;
-  color: var(--text);
-}
-.retro-input-dialog textarea {
-  width: 100%;
-  min-height: 100px;
-  background: var(--surface2);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px;
-  font-family: inherit;
-  font-size: 12px;
-  line-height: 1.6;
-  resize: vertical;
-}
-.retro-input-dialog textarea:focus { outline: none; border-color: var(--accent); }
-.retro-input-dialog .retro-author-input {
-  width: 100%;
-  background: var(--surface2);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 8px 12px;
-  font-family: inherit;
-  font-size: 12px;
-  margin-top: 10px;
-}
-.retro-input-dialog .retro-author-input:focus { outline: none; border-color: var(--accent); }
-.retro-input-dialog .dialog-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 16px;
-}
-.retro-input-dialog .dialog-buttons button {
-  padding: 8px 18px;
-  border-radius: 6px;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  transition: background 0.15s;
-}
-.retro-input-dialog .dialog-buttons .btn-cancel {
-  background: none;
-  color: var(--text2);
-}
-.retro-input-dialog .dialog-buttons .btn-cancel:hover { background: var(--surface2); }
-.retro-input-dialog .dialog-buttons .btn-save {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-.retro-input-dialog .dialog-buttons .btn-save:hover { background: #2563eb; }
-
-/* Action item checkbox */
-.retro-item.action-item .retro-item-text {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-.retro-item.action-item input[type="checkbox"] {
-  accent-color: var(--accent);
-  margin-top: 3px;
-  flex-shrink: 0;
-}
-.retro-item.action-item.completed .item-text-content {
-  text-decoration: line-through;
-  opacity: 0.5;
+  white-space: nowrap;
 }
 
 /* --- Working Agreement View --- */
@@ -663,18 +476,28 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 .agreement-header h2 {
   font-size: 14px;
   font-weight: 600;
   color: var(--text);
+  white-space: nowrap;
 }
 .agreement-header-actions {
   display: flex;
   gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+#agreement-info {
+  font-size: 10px;
+  color: var(--text2);
+  white-space: nowrap;
 }
 .agreement-header-actions button {
   padding: 6px 14px;
@@ -886,40 +709,68 @@ footer {
 .retros-body {
   flex: 1;
   overflow-y: auto;
-  padding: 24px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   min-height: 0;
+  -webkit-overflow-scrolling: touch;
 }
+.retros-body::-webkit-scrollbar { width: 6px; }
+.retros-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
 .retro-entry {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
 }
 .retro-entry-header {
-  padding: 16px 20px;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
 }
+.retro-entry-header:hover { background: var(--surface2); }
+.retro-entry-header .collapse-icon {
+  font-size: 10px;
+  color: var(--text2);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+.retro-entry.collapsed .collapse-icon { transform: rotate(-90deg); }
+.retro-entry.collapsed .retro-entry-sections { display: none; }
+.retro-entry.collapsed .retro-entry-header { border-bottom: none; }
 .retro-entry-badge {
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 1px;
-  padding: 3px 10px;
+  letter-spacing: 0.8px;
+  padding: 3px 8px;
   border-radius: 4px;
   flex-shrink: 0;
+  text-transform: uppercase;
 }
 .retro-entry-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text);
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.retro-entry-meta-count {
+  font-size: 10px;
+  color: var(--text2);
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 .retro-entry-commit {
   font-size: 10px;
@@ -928,36 +779,51 @@ footer {
 }
 .retro-entry-commit code {
   background: var(--surface2);
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: 3px;
   font-size: 10px;
-  margin-right: 4px;
+  margin-right: 3px;
 }
 .retro-entry-sections {
-  padding: 16px 20px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
 }
 .retro-section {
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   border-left: 3px solid var(--border);
 }
-.retro-section-positive { border-left-color: #10B981; background: rgba(16, 185, 129, 0.05); }
-.retro-section-negative { border-left-color: #EF4444; background: rgba(239, 68, 68, 0.05); }
-.retro-section-action { border-left-color: #3B82F6; background: rgba(59, 130, 246, 0.05); }
-.retro-section-stats { border-left-color: #8B5CF6; background: rgba(139, 92, 246, 0.05); }
-.retro-section-question { border-left-color: #F59E0B; background: rgba(245, 158, 11, 0.05); }
-.retro-section-neutral { background: var(--surface2); }
+.retro-section-positive { border-left-color: #10B981; background: rgba(16, 185, 129, 0.06); }
+.retro-section-negative { border-left-color: #EF4444; background: rgba(239, 68, 68, 0.06); }
+.retro-section-action { border-left-color: #3B82F6; background: rgba(59, 130, 246, 0.06); }
+.retro-section-stats { border-left-color: #8B5CF6; background: rgba(139, 92, 246, 0.06); }
+.retro-section-question { border-left-color: #F59E0B; background: rgba(245, 158, 11, 0.06); }
+.retro-section-neutral { background: rgba(39, 53, 73, 0.5); }
 .retro-section-title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text);
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+.retro-section-title::before {
+  display: inline-block;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.retro-section-positive .retro-section-title::before { content: '\2714'; color: #10B981; }
+.retro-section-negative .retro-section-title::before { content: '\2718'; color: #EF4444; }
+.retro-section-action .retro-section-title::before { content: '\25B6'; color: #3B82F6; }
+.retro-section-stats .retro-section-title::before { content: '\25A0'; color: #8B5CF6; }
+.retro-section-question .retro-section-title::before { content: '?'; color: #F59E0B; font-weight: 700; }
+.retro-section-neutral .retro-section-title::before { content: '\25CB'; color: var(--text2); }
+
 .retro-section-content {
   font-size: 12px;
   line-height: 1.7;
@@ -966,62 +832,78 @@ footer {
 .retro-section-content strong { color: var(--text); }
 .retro-section-content code {
   background: var(--bg);
-  padding: 1px 6px;
+  padding: 1px 5px;
   border-radius: 3px;
   font-size: 11px;
   color: var(--accent);
+  word-break: break-all;
 }
 .retro-section-content em { color: var(--text); font-style: italic; }
 .retro-section-content p { margin: 4px 0; }
+.retro-section-content p:empty { display: none; }
 
 /* Retro markdown rendering */
+.retro-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
 .retro-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 8px 0;
   font-size: 11px;
+  min-width: 320px;
 }
 .retro-table th {
   background: var(--bg);
-  padding: 6px 10px;
+  padding: 7px 10px;
   text-align: left;
   font-weight: 600;
   color: var(--text);
   border-bottom: 1px solid var(--border);
+  white-space: nowrap;
 }
 .retro-table td {
-  padding: 5px 10px;
+  padding: 6px 10px;
   border-bottom: 1px solid rgba(51,65,85,0.3);
   color: var(--text2);
 }
+.retro-table td strong { color: var(--text); }
+.retro-table tr:last-child td { border-bottom: none; }
 .retro-table tr:hover td { background: rgba(59,130,246,0.04); }
 
 .retro-checkbox {
-  padding: 4px 0 4px 24px;
+  padding: 5px 0 5px 26px;
   position: relative;
+  line-height: 1.5;
 }
 .retro-checkbox::before {
   content: '';
   position: absolute;
   left: 2px;
-  top: 6px;
+  top: 7px;
   width: 14px;
   height: 14px;
   border: 1.5px solid var(--border);
   border-radius: 3px;
 }
 .retro-checkbox.checked::before {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: #10B981;
+  border-color: #10B981;
 }
 .retro-checkbox.checked::after {
   content: '\2713';
   position: absolute;
   left: 5px;
-  top: 4px;
+  top: 5px;
   color: #fff;
   font-size: 11px;
   font-weight: 700;
+}
+.retro-checkbox.unchecked::before {
+  border-color: var(--text2);
 }
 .retro-checkbox.partial::before {
   background: #F59E0B44;
@@ -1031,7 +913,7 @@ footer {
   content: '~';
   position: absolute;
   left: 6px;
-  top: 3px;
+  top: 4px;
   color: #F59E0B;
   font-size: 12px;
   font-weight: 700;
@@ -1039,6 +921,7 @@ footer {
 
 .retro-list-item {
   padding: 4px 0;
+  line-height: 1.6;
 }
 .retro-list-num {
   color: var(--accent);
@@ -1048,21 +931,22 @@ footer {
 .retro-bullet {
   padding: 3px 0 3px 16px;
   position: relative;
+  line-height: 1.6;
 }
 .retro-bullet::before {
   content: '\2022';
   position: absolute;
-  left: 2px;
+  left: 3px;
   color: var(--text2);
 }
 .retro-bullet.retro-indent {
-  padding-left: 32px;
+  padding-left: 30px;
 }
-.retro-bullet.retro-indent::before { left: 18px; }
+.retro-bullet.retro-indent::before { left: 16px; }
 .retro-bullet.retro-indent2 {
-  padding-left: 48px;
+  padding-left: 44px;
 }
-.retro-bullet.retro-indent2::before { left: 34px; }
+.retro-bullet.retro-indent2::before { left: 30px; }
 .retro-code {
   background: var(--bg);
   padding: 10px 14px;
@@ -1079,13 +963,13 @@ footer {
 .agreement-item-updates {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
+  gap: 5px;
+  margin-top: 10px;
 }
 .agreement-update-tag {
   font-size: 9px;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 10px;
   background: rgba(59, 130, 246, 0.12);
   color: var(--accent);
   font-weight: 600;
@@ -1100,7 +984,7 @@ footer {
   padding: 12px 16px;
   font-size: 12px;
   color: #F59E0B;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 .agreement-version-note strong { color: #FBBF24; }
 .agreement-version-note code {
@@ -1112,15 +996,15 @@ footer {
 
 /* --- Git Timeline --- */
 .agreement-git-timeline {
-  margin-top: 32px;
-  padding-top: 20px;
+  margin-top: 24px;
+  padding-top: 16px;
   border-top: 1px solid var(--border);
 }
 .git-timeline-entry {
   display: flex;
   gap: 12px;
   position: relative;
-  padding-bottom: 16px;
+  padding-bottom: 14px;
 }
 .git-timeline-dot {
   width: 10px;
@@ -1160,9 +1044,7 @@ footer {
   line-height: 1.4;
   word-break: break-word;
 }
-.git-timeline-sha {
-  margin-top: 2px;
-}
+.git-timeline-sha { margin-top: 2px; }
 .git-timeline-sha code {
   font-size: 10px;
   color: var(--text2);
@@ -1172,17 +1054,24 @@ footer {
 }
 
 /* --- Agreement body content styles --- */
+.agreement-body {
+  padding: 16px;
+}
+.agreement-body::-webkit-scrollbar { width: 6px; }
+.agreement-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 .agreement-body .agreement-item-detail {
   max-height: none;
 }
 .agreement-body .agreement-item-detail p { margin: 3px 0; }
+.agreement-body .agreement-item-detail p:empty { display: none; }
 .agreement-body .agreement-item-detail strong { color: var(--text); }
 .agreement-body .agreement-item-detail code {
   background: var(--bg);
-  padding: 1px 6px;
+  padding: 1px 5px;
   border-radius: 3px;
   font-size: 11px;
   color: var(--accent);
+  word-break: break-all;
 }
 .agreement-body .retro-bullet {
   padding: 2px 0 2px 16px;
@@ -1191,9 +1080,75 @@ footer {
   line-height: 1.6;
   color: var(--text2);
 }
-.agreement-body .retro-table {
-  width: 100%;
+.agreement-body .retro-table-wrap {
   margin: 6px 0;
+}
+
+/* --- Mobile Responsive --- */
+@media (max-width: 768px) {
+  header {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  header h1 { font-size: 13px; }
+  .nav-tabs { order: -1; width: 100%; justify-content: center; }
+  .nav-tab { padding: 6px 12px; font-size: 10px; }
+  #transcript-select {
+    max-width: none;
+    font-size: 11px;
+  }
+
+  .retros-header {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .retros-header h2 { font-size: 13px; }
+  .retros-body { padding: 10px; gap: 12px; }
+
+  .retro-entry-header { padding: 12px; gap: 8px; }
+  .retro-entry-title { font-size: 12px; }
+  .retro-entry-badge { font-size: 7px; padding: 2px 6px; }
+  .retro-entry-commit { display: none; }
+  .retro-entry-sections { padding: 10px 12px; gap: 8px; }
+  .retro-section { padding: 10px 12px; }
+  .retro-section-title { font-size: 10px; margin-bottom: 6px; }
+  .retro-section-content { font-size: 11px; line-height: 1.6; }
+  .retro-table { font-size: 10px; }
+  .retro-table th, .retro-table td { padding: 4px 6px; }
+  .retro-list-item { font-size: 11px; }
+  .retro-bullet { font-size: 11px; }
+
+  .agreement-header { flex-wrap: wrap; padding: 10px 12px; }
+  .agreement-header h2 { font-size: 13px; }
+  .agreement-body { padding: 10px; }
+  .agreement-item { padding: 10px 12px; gap: 8px; }
+  .agreement-item-icon { font-size: 12px; width: 20px; }
+  .agreement-item-text { font-size: 11px; }
+  .agreement-item-detail { font-size: 11px; }
+
+  .git-timeline-msg { font-size: 11px; }
+
+  #panel { width: 260px; }
+  footer { padding: 8px 12px; }
+
+  .retro-session-select { font-size: 11px; }
+}
+
+@media (max-width: 480px) {
+  header h1 { font-size: 12px; }
+  .nav-tab { padding: 5px 10px; font-size: 9px; letter-spacing: 0.5px; }
+
+  .retros-body { padding: 8px; gap: 10px; }
+  .retro-entry-header { padding: 10px; }
+  .retro-entry-title { font-size: 11px; }
+  .retro-entry-sections { padding: 8px 10px; gap: 6px; }
+  .retro-section { padding: 8px 10px; border-left-width: 2px; }
+  .retro-section-title { font-size: 9px; }
+  .retro-section-content { font-size: 10px; }
+
+  .agreement-body { padding: 8px; }
+  .agreement-item { padding: 8px 10px; }
 }
 </style>
 </head>
@@ -2319,44 +2274,59 @@ function parseRetroLog(markdown) {
 function renderMarkdownContent(text) {
   // Basic markdown to HTML conversion for display
   let html = text
-    // Tables
-    .replace(/^(\|.+\|)\n(\|[-| :]+\|)\n((?:\|.+\|\n?)*)/gm, (match, header, sep, rows) => {
-      const headers = header.split('|').filter(c => c.trim()).map(c => `<th>${c.trim()}</th>`).join('');
-      const bodyRows = rows.trim().split('\n').map(row => {
-        const cells = row.split('|').filter(c => c.trim()).map(c => `<td>${c.trim()}</td>`).join('');
-        return `<tr>${cells}</tr>`;
-      }).join('');
-      return `<table class="retro-table"><thead><tr>${headers}</tr></thead><tbody>${bodyRows}</tbody></table>`;
-    })
-    // Checkbox items
-    .replace(/^- \[x\] (.+)$/gm, '<div class="retro-checkbox checked">$1</div>')
-    .replace(/^- \[~\] (.+)$/gm, '<div class="retro-checkbox partial">$1</div>')
-    .replace(/^- \[ \] (.+)$/gm, '<div class="retro-checkbox unchecked">$1</div>')
-    // Numbered lists
-    .replace(/^(\d+)\. \*\*(.+?)\*\*(.*)$/gm, '<div class="retro-list-item"><span class="retro-list-num">$1.</span> <strong>$2</strong>$3</div>')
-    .replace(/^(\d+)\. (.+)$/gm, '<div class="retro-list-item"><span class="retro-list-num">$1.</span> $2</div>')
-    // Bullet points
-    .replace(/^- \*\*(.+?)\*\*(.*)$/gm, '<div class="retro-bullet"><strong>$1</strong>$2</div>')
-    .replace(/^- (.+)$/gm, '<div class="retro-bullet">$1</div>')
-    // Indented bullets
-    .replace(/^  - (.+)$/gm, '<div class="retro-bullet retro-indent">$1</div>')
-    .replace(/^   - (.+)$/gm, '<div class="retro-bullet retro-indent">$1</div>')
-    .replace(/^    - (.+)$/gm, '<div class="retro-bullet retro-indent2">$1</div>')
-    // Bold
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    // Italic
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // Inline code
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    // Code blocks
+    // Code blocks (process first to protect from other transforms)
     .replace(/```[\s\S]*?```/g, m => {
       const code = m.replace(/```\w*\n?/, '').replace(/\n?```$/, '');
-      return '<pre class="retro-code">' + code + '</pre>';
+      return '<pre class="retro-code">' + escapeHtml(code) + '</pre>';
     })
-    // Paragraphs (remaining non-empty lines)
-    .replace(/^(?!<)(.+)$/gm, '<p>$1</p>');
+    // Tables — wrap in scrollable container
+    .replace(/^(\|.+\|)\n(\|[-| :]+\|)\n((?:\|.+\|\n?)*)/gm, (match, header, sep, rows) => {
+      const headers = header.split('|').filter(c => c.trim()).map(c => `<th>${inlineMarkdown(c.trim())}</th>`).join('');
+      const bodyRows = rows.trim().split('\n').filter(r => r.trim()).map(row => {
+        const cells = row.split('|').filter(c => c.trim()).map(c => `<td>${inlineMarkdown(c.trim())}</td>`).join('');
+        return `<tr>${cells}</tr>`;
+      }).join('');
+      return `<div class="retro-table-wrap"><table class="retro-table"><thead><tr>${headers}</tr></thead><tbody>${bodyRows}</tbody></table></div>`;
+    })
+    // Checkbox items
+    .replace(/^- \[x\] (.+)$/gm, (_, t) => '<div class="retro-checkbox checked">' + inlineMarkdown(t) + '</div>')
+    .replace(/^- \[~\] (.+)$/gm, (_, t) => '<div class="retro-checkbox partial">' + inlineMarkdown(t) + '</div>')
+    .replace(/^- \[ \] (.+)$/gm, (_, t) => '<div class="retro-checkbox unchecked">' + inlineMarkdown(t) + '</div>')
+    // Numbered lists with bold lead
+    .replace(/^(\d+)\. \*\*(.+?)\*\*(.*)$/gm, (_, n, b, rest) => '<div class="retro-list-item"><span class="retro-list-num">' + n + '.</span> <strong>' + inlineMarkdown(b) + '</strong>' + inlineMarkdown(rest) + '</div>')
+    // Numbered lists plain
+    .replace(/^(\d+)\. (.+)$/gm, (_, n, t) => '<div class="retro-list-item"><span class="retro-list-num">' + n + '.</span> ' + inlineMarkdown(t) + '</div>')
+    // Indented bullets (4 space)
+    .replace(/^    - (.+)$/gm, (_, t) => '<div class="retro-bullet retro-indent2">' + inlineMarkdown(t) + '</div>')
+    // Indented bullets (2-3 space)
+    .replace(/^ {2,3}- (.+)$/gm, (_, t) => '<div class="retro-bullet retro-indent">' + inlineMarkdown(t) + '</div>')
+    // Top-level bullets with bold
+    .replace(/^- \*\*(.+?)\*\*(.*)$/gm, (_, b, rest) => '<div class="retro-bullet"><strong>' + inlineMarkdown(b) + '</strong>' + inlineMarkdown(rest) + '</div>')
+    // Top-level bullets plain
+    .replace(/^- (.+)$/gm, (_, t) => '<div class="retro-bullet">' + inlineMarkdown(t) + '</div>')
+    // Remaining inline formatting
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    // Horizontal rules
+    .replace(/^---+$/gm, '')
+    // Paragraphs (remaining non-empty, non-HTML lines)
+    .replace(/^(?!<|\s*$)(.+)$/gm, (_, t) => '<p>' + inlineMarkdown(t) + '</p>')
+    // Remove empty paragraphs
+    .replace(/<p>\s*<\/p>/g, '');
 
   return html;
+}
+
+function inlineMarkdown(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>');
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 async function loadRetroData() {
@@ -2427,10 +2397,15 @@ function renderRetros(filter) {
       return false;
     });
 
+    // Start collapsed in "all" view to reduce scroll overwhelm
+    const startCollapsed = filter === 'all';
+
     let headerHTML = `
-      <div class="retro-entry-header">
+      <div class="retro-entry-header" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span class="collapse-icon">\u25BC</span>
         <span class="retro-entry-badge" style="background:${typeColors[entry.entryType]}22;color:${typeColors[entry.entryType]}">${typeLabels[entry.entryType]}</span>
         <h3 class="retro-entry-title">${entry.title}</h3>
+        <span class="retro-entry-meta-count">${entry.subsections.length} sections</span>
         ${associatedCommit ? `<span class="retro-entry-commit" title="${associatedCommit.message}"><code>${associatedCommit.sha}</code> ${associatedCommit.date}</span>` : ''}
       </div>
     `;
@@ -2444,7 +2419,9 @@ function renderRetros(filter) {
       if (titleLower.includes('friction') || titleLower.includes('went wrong') || titleLower.includes('defects')) sectionClass = 'negative';
       if (titleLower.includes('action item') || titleLower.includes('agreements changed') || titleLower.includes('agreements to change')) sectionClass = 'action';
       if (titleLower.includes('stats') || titleLower.includes('burndown')) sectionClass = 'stats';
-      if (titleLower.includes('open question')) sectionClass = 'question';
+      if (titleLower.includes('open question') || titleLower.includes('resolved question')) sectionClass = 'question';
+      if (titleLower.includes('feedback') || titleLower.includes('investigation')) sectionClass = 'negative';
+      if (titleLower.includes('immediate fixes') || titleLower.includes('fixes applied')) sectionClass = 'action';
 
       sectionsHTML += `
         <div class="retro-section retro-section-${sectionClass}">
@@ -2455,6 +2432,7 @@ function renderRetros(filter) {
     }
 
     card.innerHTML = headerHTML + '<div class="retro-entry-sections">' + sectionsHTML + '</div>';
+    if (startCollapsed) card.classList.add('collapsed');
     body.appendChild(card);
   }
 }
