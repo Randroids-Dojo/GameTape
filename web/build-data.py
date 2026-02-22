@@ -113,20 +113,22 @@ def parse_metadata(content):
     return meta
 
 
-def parse_messages(content):
+def parse_messages(content, date=''):
     messages = []
-    sections = re.split(r'^(## (?:User|Assistant) \(\d{2}:\d{2} UTC\))', content, flags=re.MULTILINE)
+    sections = re.split(r'^(## (?:User|Assistant) \(\d{2}:\d{2}(?::\d{2})? UTC\))', content, flags=re.MULTILINE)
     last_teammate = None
 
     for i in range(1, len(sections), 2):
         header = sections[i]
         body = sections[i + 1] if i + 1 < len(sections) else ""
 
-        hm = re.match(r'## (User|Assistant) \((\d{2}:\d{2}) UTC\)', header)
+        hm = re.match(r'## (User|Assistant) \((\d{2}:\d{2}(?::\d{2})?) UTC\)', header)
         if not hm:
             continue
 
         role, time = hm.group(1), hm.group(2)
+        if date:
+            time = f"{date} {time}"
 
         tm = re.search(
             r'<teammate-message\s+teammate_id="([^"]+)"(?:\s+color="([^"]*)")?(?:\s+summary="([^"]*)")?\s*>',
@@ -180,7 +182,7 @@ def parse_messages(content):
 
 def parse_transcript_content(name, content):
     metadata = parse_metadata(content)
-    messages = parse_messages(content)
+    messages = parse_messages(content, date=metadata.get('date', ''))
 
     parts = name.split('-', 4)
     title = parts[4].replace('-', ' ').title() if len(parts) > 4 else name
